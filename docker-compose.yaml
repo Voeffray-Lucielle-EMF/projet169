@@ -1,33 +1,30 @@
 services:
   haproxy:
     container_name: haproxy
-    image: haproxy:latest
+    image: haproxy:3.1-bookworm
     restart: unless-stopped
     ports:
       - 80:80
-    user: 1001:1001
     networks: [lb-net]
     volumes:
       - ./haproxy:/usr/local/etc/haproxy/:ro
 
   phpmyadmin:
     container_name: phpmyadmin
-    image: phpmyadmin:latest
+    image: phpmyadmin:5.2-apache
     restart: unless-stopped
     environment:
       - PMA_HOST=mariadb
       - PMA_USER=wordpress
       - PMA_PASSWORD=Emf12345
-    user: 1001:1001
     networks:
       - lb-net
       - backend-net
 
   wordpress:
     container_name: wordpress
-    image: wordpress:latest
+    image: wordpress:6.7-apache
     restart: unless-stopped
-    user: 1001:1001
     networks:
       - lb-net
       - backend-net
@@ -37,7 +34,7 @@ services:
 
   mariadb:
     container_name: mariadb
-    image: mariadb:latest
+    image: mariadb:11.7-noble
     restart: unless-stopped
     networks:
       - backend-net
