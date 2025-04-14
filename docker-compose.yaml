@@ -5,9 +5,10 @@ services:
     restart: unless-stopped
     ports:
       - 80:80
+    user: ${UID}
     networks: [lb-net]
     volumes:
-      - ./haproxy:/usr/local/etc/haproxy/
+      - ./haproxy:/usr/local/etc/haproxy/:ro
 
   phpmyadmin:
     container_name: phpmyadmin
@@ -17,6 +18,7 @@ services:
       - PMA_HOST=mariadb
       - PMA_USER=wordpress
       - PMA_PASSWORD=Emf12345
+    user: ${UID}
     networks:
       - lb-net
       - backend-net
@@ -25,6 +27,7 @@ services:
     container_name: wordpress
     image: wordpress:latest
     restart: unless-stopped
+    user: ${UID}
     networks:
       - lb-net
       - backend-net
